@@ -9,7 +9,6 @@ import time
 np.random.seed(0)
 tf.set_random_seed(0)
 
-
 def get_batch(n):
     x = np.random.random(n)
     y = np.exp(x)
@@ -58,18 +57,23 @@ def average_gradients(tower_grads):
     return average_grads
 
 
-# psでパラメータ（variable)を作成する。
-with tf.device("/job:ps/task:0"):
+# master内のpsスコープでパラメータ（variable)を作成する。
+with tf.device("/job:master/task:0"):
     with tf.variable_scope("ps") as scope:
-        [W1,W2,W3,b1,b2,b3] = get_variables()
+        x = tf.placeholder(tf.float32, shape=[None, 1])
+        t = tf.placeholder(tf.float32, shape=[None, 1])
+        total_loss = loss(x,t)
+        tf.add_to_collection("master_x",x)
+        tf.add_to_collection("master_t",t)
+        tf.add_to_collection("total_loss",total_loss)
 
-# worker は、psのもつパラメータをreuseして微分を計算するところまでの演算を行う。
+# worker は、psのパラメータをreuseして微分を計算するところまでの演算を行う。
 workers= [ "worker","worker_"]
 for workername in workers:
     with tf.device("/job:%s/task:0" % workername):
         with tf.variable_scope("ps",reuse=True):
 
-            # psの持つパラメータをreuseして微分を演算
+            # psのパラメータをreuseして微分を演算
             x = tf.placeholder(tf.float32, shape=[None, 1])
             t = tf.placeholder(tf.float32, shape=[None, 1])
             e = loss(x,t)
@@ -124,12 +128,11 @@ with tf.Session("grpc://localhost:2222") as sess:
         # パラメータ更新
         sess.run(ag, feed_dict=feed_dict)
 
-        # コスト計算はサボって最初のworkerだけでやることにする。
-        # ほんとはトータルコストを出すほうがよいのだろうか。
-        x0_ = tf.get_collection("x")[0]
-        t0_ = tf.get_collection("t")[0]
-        e = tf.get_collection("e")[0]
-        loss = sess.run(e,feed_dict={x0_: xs[0], t0_:ts[0]})
+        # トータルコスト計算
+        mx = tf.get_collection("master_x")[0]
+        mt = tf.get_collection("master_t")[0]
+        e = tf.get_collection("total_loss")[0]
+        loss = sess.run(e,feed_dict={mx: x, mt:t})
         losses.append(loss)
 
         if i%100==0:
