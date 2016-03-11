@@ -1,7 +1,10 @@
 # DistributedTensorFlowSample
 
 Distributed TensorFlow のサンプルです。
+
 grpc_tensorflow_serverがビルドされており、パスも通っている環境で動作します。
+
+説明は近々Qiitaに書きます。
 
 ## シングルCPU版の実行
 
@@ -16,7 +19,7 @@ python ./single_cpu.py
 python ./model_parallel.py
 ```
 
-## モデル並列版の実行
+## データ並列版の実行
 
 ```
 ./data_parallel_server.sh
