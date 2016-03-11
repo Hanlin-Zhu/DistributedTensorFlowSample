@@ -5,21 +5,21 @@ grpc_tensorflow_serverがビルドされており、パスも通っている環�
 
 ## シングルCPU版の実行
 
-'''
+```
 python ./single_cpu.py
-'''
+```
 
 ## モデル並列版の実行
 
-'''
+```
 ./model_parallel_server.sh
 python ./model_parallel.py
-'''
+```
 
 ## モデル並列版の実行
 
-'''
+```
 ./data_parallel_server.sh
 python ./single_cpu.py
-'''
+```
 
