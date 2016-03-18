@@ -1,0 +1,63 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: tfserver
+spec:
+  containers:
+
+    - name: if
+      command: ["/usr/local/bin/jupyter"]
+      args: ["notebook"]
+      image: us.gcr.io/molten-turbine-123703/tf_if
+      ports:
+        - containerPort: 8888
+
+    - name: master
+      command: ["/bin/grpc_tensorflow_server"]
+      args: ["--cluster_spec=master|localhost:2222,worker0|localhost:2223,worker1|localhost:2224,worker2|localhost:2225,worker3|localhost:2226,worker4|localhost:2227,worker5|localhost:2228","--job_name=master","--task_index=0"]
+      image: us.gcr.io/molten-turbine-123703/tf_server
+      ports:
+        - containerPort: 2222
+    
+    - name: worker0
+      command: ["/bin/grpc_tensorflow_server"]
+      args: ["--cluster_spec=master|localhost:2222,worker0|localhost:2223,worker1|localhost:2224,worker2|localhost:2225,worker3|localhost:2226,worker4|localhost:2227,worker5|localhost:2228","--job_name=worker0","--task_index=0"]
+      image: us.gcr.io/molten-turbine-123703/tf_server
+      ports:
+        - containerPort: 2223
+    
+    - name: worker1
+      command: ["/bin/grpc_tensorflow_server"]
+      args: ["--cluster_spec=master|localhost:2222,worker0|localhost:2223,worker1|localhost:2224,worker2|localhost:2225,worker3|localhost:2226,worker4|localhost:2227,worker5|localhost:2228","--job_name=worker1","--task_index=0"]
+      image: us.gcr.io/molten-turbine-123703/tf_server
+      ports:
+        - containerPort: 2224
+    
+    - name: worker2
+      command: ["/bin/grpc_tensorflow_server"]
+      args: ["--cluster_spec=master|localhost:2222,worker0|localhost:2223,worker1|localhost:2224,worker2|localhost:2225,worker3|localhost:2226,worker4|localhost:2227,worker5|localhost:2228","--job_name=worker2","--task_index=0"]
+      image: us.gcr.io/molten-turbine-123703/tf_server
+      ports:
+        - containerPort: 2225
+    
+    - name: worker3
+      command: ["/bin/grpc_tensorflow_server"]
+      args: ["--cluster_spec=master|localhost:2222,worker0|localhost:2223,worker1|localhost:2224,worker2|localhost:2225,worker3|localhost:2226,worker4|localhost:2227,worker5|localhost:2228","--job_name=worker3","--task_index=0"]
+      image: us.gcr.io/molten-turbine-123703/tf_server
+      ports:
+        - containerPort: 2226
+    
+    - name: worker4
+      command: ["/bin/grpc_tensorflow_server"]
+      args: ["--cluster_spec=master|localhost:2222,worker0|localhost:2223,worker1|localhost:2224,worker2|localhost:2225,worker3|localhost:2226,worker4|localhost:2227,worker5|localhost:2228","--job_name=worker4","--task_index=0"]
+      image: us.gcr.io/molten-turbine-123703/tf_server
+      ports:
+        - containerPort: 2227
+    
+    - name: worker5
+      command: ["/bin/grpc_tensorflow_server"]
+      args: ["--cluster_spec=master|localhost:2222,worker0|localhost:2223,worker1|localhost:2224,worker2|localhost:2225,worker3|localhost:2226,worker4|localhost:2227,worker5|localhost:2228","--job_name=worker5","--task_index=0"]
+      image: us.gcr.io/molten-turbine-123703/tf_server
+      ports:
+        - containerPort: 2228
+    
