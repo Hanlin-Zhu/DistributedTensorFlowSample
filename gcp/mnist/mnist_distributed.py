@@ -11,8 +11,8 @@ mnist = input_data.read_data_sets('MNIST_data', one_hot=True)
 
 import tensorflow as tf
 
-num_workers=2
-num_batches=100
+num_workers=6
+num_batches=2000
 
 
 # model utitlity functions
