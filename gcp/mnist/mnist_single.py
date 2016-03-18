@@ -1,4 +1,4 @@
-from matplotlib import pyplot as plt
+#from matplotlib import pyplot as plt
 import numpy as np
 import math
 import time
@@ -64,7 +64,7 @@ y_conv=tf.nn.softmax(tf.matmul(h_fc1_drop, W_fc2) + b_fc2)
 
 # loss, optimizer & output definitions
 cross_entropy = -tf.reduce_sum(t*tf.log(y_conv))
-train_step = tf.train.AdamOptimizer().minimize(cross_entropy)
+train_step = tf.train.AdamOptimizer(1e-4).minimize(cross_entropy)
 correct_prediction = tf.equal(tf.argmax(y_conv,1), tf.argmax(t,1))
 accuracy = tf.reduce_mean(tf.cast(correct_prediction, "float"))
 
