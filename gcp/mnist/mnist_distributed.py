@@ -11,6 +11,7 @@ mnist = input_data.read_data_sets('MNIST_data', one_hot=True)
 
 import tensorflow as tf
 
+grpc_host="localhost"
 num_workers=6
 num_batches=600
 
@@ -142,7 +143,7 @@ with tf.device("/job:master/task:0"):
 
 # train loop
 
-sess = tf.Session("grpc://localhost:2222")
+sess = tf.Session("grpc://%s:2222" % grpc_host)
 sess.run(tf.initialize_all_variables())
 
 elapsed_time10=0.0
