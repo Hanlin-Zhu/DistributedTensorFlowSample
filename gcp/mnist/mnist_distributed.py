@@ -6,14 +6,22 @@ import numpy as np
 import math
 import time
 
+import sys
+
 import input_data
-mnist = input_data.read_data_sets('MNIST_data', one_hot=True)
 
 import tensorflow as tf
 
-grpc_host="localhost"
+argvs = sys.argv
+if len(argvs)!=2:
+  print("usage: python mnist_distributed.py grpc_host_name")
+  exit(-1)
+grpc_host= argvs[1]
+
 num_workers=6
 num_batches=600
+
+mnist = input_data.read_data_sets('MNIST_data', one_hot=True)
 
 
 # model utitlity functions
