@@ -19,7 +19,7 @@ if len(argvs)!=2:
 grpc_host= argvs[1]
 
 num_workers=6
-num_batches=600
+num_batches=100
 
 mnist = input_data.read_data_sets('MNIST_data', one_hot=True)
 
