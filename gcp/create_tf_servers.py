@@ -4,7 +4,7 @@ import commands
 import os
 import tempfile
 
-num_workers=6
+num_workers=3
 
 z=os.environ["PROJECT_ZONE"].split("-")[0]
 project = z+".gcr.io/"+os.environ["PROJECT_ID"]
